@@ -16,7 +16,7 @@ const getMovieById = (req, res) => {
   const id = parseInt(req.params.id);
 
   database
-    .query('select * from movies where id = ?', [id])
+    .query('SELECT * FROM movies WHERE id = ?', [id])
     .then(([movies]) => {
       if (movies[0] != null) {
         res.json(movies[0]);
@@ -51,11 +51,10 @@ const postMovie = (req, res) => {
 
 const updateMovie = (req, res) => {
   const id = parseInt(req.params.id);
-  const { title, director, year, color, duration } = req.body;
 
   database
     .query(
-      "update movies set title = ?, director = ?, year = ?, color = ?, duration = ? where id = ?",
+      "UPDATE movies SET title = ?, director = ?, year = ?, color = ?, duration = ? where id = ?",
       [title, director, year, color, duration, id]
     )
     .then(([result]) => {
@@ -71,6 +70,27 @@ const updateMovie = (req, res) => {
     });
 };
 
+const deleteMovie = (req, res) => {
+  const id = parseInt(req.params.id);
+
+  database
+    .query(
+      "DELETE FROM movies WHERE id = ?",
+      [id]
+    )
+    .then(([result]) => {
+      if (result.affectedRows === 0) {
+        res.status(404).send("Not Found");
+      } else {
+        res.status(204).send("No Content");
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error deleting the movie");
+    });
+}
+
 
 
 module.exports = {
@@ -78,4 +98,5 @@ module.exports = {
   getMovieById,
   postMovie,
   updateMovie,
+  deleteMovie
 };
