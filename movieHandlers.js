@@ -2,7 +2,7 @@ const database = require("./database");
 
 const getMovies = (req, res) => {
   let sql = "SELECT * FROM movies ";
-  let sqlValues = [];
+  const sqlValues = [];
 
   if (req.query.color != null) {
     sql += " where color = ?";

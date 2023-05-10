@@ -2,7 +2,7 @@ const database = require('./database');
 
 const getUsers = (req, res) => {
     let sql = "SELECT * FROM users ";
-    let sqlValues = [];
+    const sqlValues = [];
 
     if (req.query.language != null) {
         sql += "WHERE language = ? ";
