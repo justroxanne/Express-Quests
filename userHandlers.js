@@ -17,11 +17,11 @@ const getUsers = (req, res) => {
   database
     .query(sql, sqlValues)
     .then(([users]) => {
-      const safetyUsers = users.map((user) => {
+      users.map((user) => {
         delete user.hashedPassword;
         return user;
       });
-      res.json(safetyUsers);
+      res.json(users);
     })
     .catch((err) => {
       console.error(err);
@@ -36,6 +36,7 @@ const getUserById = (req, res) => {
     .query('SELECT * FROM users WHERE id = ?', [id])
     .then(([users]) => {
       if (users[0] != null) {
+        delete users[0].hashedPassword;
         res.json(users[0]);
       } else {
         res.status(404).send('Not Found');
